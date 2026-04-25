@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book; 
+use App\Models\Book; // Import model Book-nya
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
     public function index()
     {
-        // 1. Panggil data dari Model 
-        $books = Book::allData(); 
+        // Ambil semua data buku dari database
+        $books = Book::all();
 
-        // 2. Kirim data ke View
+        // Kirim data ke view 'books.index' (file index.blade.php di folder books)
         return view('books.index', compact('books'));
     }
 }

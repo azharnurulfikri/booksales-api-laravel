@@ -12,11 +12,11 @@ class AuthorController extends Controller
      * Menampilkan daftar penulis.
      */
     public function index()
+    
+        
     {
-        // Mengambil data array dummy dari static method di Model Author
-        $authors = Author::allData();
-
-        // Mengirim data ke view 'authors.index'
-        return view('authors.index', compact('authors'));
+    $authors = \App\Models\Author::all();
+    return view('authors.index', compact('authors')); // Pastikan ada 's' setelah author
     }
+    
 }
