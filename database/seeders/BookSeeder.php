@@ -7,48 +7,64 @@ use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        $books = [
-            [
-                'title' => 'Bumi',
-                'description' => 'Petualangan di dunia paralel.',
-                'publish_year' => 2014,
-                'author_id' => 1,
-                'genre_id' => 3, // Asumsi 3 adalah Fantasy
-            ],
-            [
-                'title' => 'Hamka',
-                'description' => 'Kisah hidup Buya Hamka.',
-                'publish_year' => 2016,
-                'author_id' => 2,
-                'genre_id' => 1, // Asumsi 1 adalah Action/Lainnya
-            ],
-            [
-                'title' => 'Perahu Kertas',
-                'description' => 'Kisah cinta dan impian.',
-                'publish_year' => 2009,
-                'author_id' => 3,
-                'genre_id' => 2, // Asumsi 2 adalah Romance
-            ],
-            [
-                'title' => 'Garis Waktu',
-                'description' => 'Kumpulan surat dan cerita.',
-                'publish_year' => 2016,
-                'author_id' => 4,
-                'genre_id' => 2,
-            ],
-            [
-                'title' => 'Laskar Pelangi',
-                'description' => 'Perjuangan anak-anak Belitong.',
-                'publish_year' => 2005,
-                'author_id' => 5,
-                'genre_id' => 1,
-            ],
-        ];
+        // Data 1
+        Book::create([
+            'title' => 'Bumi',
+            'description' => 'Petualangan di dunia paralel karya Tere Liye.',
+            'price' => 95000,
+            'stock' => 50,
+            'cover_photo' => 'bumi.jpg',
+            'genre_id' => 3,
+            'author_id' => 1,
+        ]);
 
-        foreach ($books as $book) {
-            Book::create($book);
-        }
+        // Data 2
+        Book::create([
+            'title' => 'Hamka',
+            'description' => 'Kisah inspiratif perjalanan hidup Buya Hamka.',
+            'price' => 85000,
+            'stock' => 30,
+            'cover_photo' => 'hamka.jpg',
+            'genre_id' => 1,
+            'author_id' => 2,
+        ]);
+
+        // Data 3
+        Book::create([
+            'title' => 'Perahu Kertas',
+            'description' => 'Kisah tentang radar hati dan impian yang hanyut.',
+            'price' => 75000,
+            'stock' => 45,
+            'cover_photo' => 'perahu_kertas.jpg',
+            'genre_id' => 2,
+            'author_id' => 3,
+        ]);
+
+        // Data 4
+        Book::create([
+            'title' => 'Garis Waktu',
+            'description' => 'Kumpulan surat-surat tentang kenangan dan pengharapan.',
+            'price' => 65000,
+            'stock' => 25,
+            'cover_photo' => 'garis_waktu.jpg',
+            'genre_id' => 2,
+            'author_id' => 4,
+        ]);
+
+        // Data 5
+        Book::create([
+            'title' => 'Laskar Pelangi',
+            'description' => 'Perjuangan sepuluh anak di Belitong dalam meraih mimpi.',
+            'price' => 89000,
+            'stock' => 60,
+            'cover_photo' => 'laskar_pelangi.jpg',
+            'genre_id' => 1,
+            'author_id' => 5,
+        ]);
     }
 }

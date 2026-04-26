@@ -9,20 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
-{
-    Schema::create('books', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->text('description');
-        $table->integer('publish_year');
-        // Relasi ke Author
-        $table->foreignId('author_id')->constrained()->onDelete('cascade');
-        // Relasi ke Genre
-        $table->foreignId('genre_id')->constrained()->onDelete('cascade');
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('books', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->text('description');
+            $table->integer('price');
+            $table->integer('stock');
+            $table->string('cover_photo');
+            $table->unsignedBigInteger('genre_id');
+            $table->unsignedBigInteger('author_id');
+            $table->timestamps();
+
+            // Opsional: Tambahkan foreign key agar data lebih aman
+            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
+        });
+    }
 
     /**
      * Reverse the migrations.

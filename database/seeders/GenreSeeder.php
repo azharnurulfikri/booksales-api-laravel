@@ -2,30 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\Genre; 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Genre;
 use Illuminate\Database\Seeder;
 
 class GenreSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         Genre::create([
             'name' => 'Action',
-            'description' => 'Genre yang menekankan pada adegan aksi, pertempuran, dan kecepatan.',
+            'description' => 'Genre yang penuh dengan aksi dan ketegangan.'
         ]);
 
         Genre::create([
             'name' => 'Romance',
-            'description' => 'Genre yang menekankan pada hubungan romantis dan cinta.',
+            'description' => 'Genre yang berfokus pada hubungan percintaan.'
         ]);
 
         Genre::create([
             'name' => 'Fantasy',
-            'description' => 'Genre yang mengeksplorasi imajinasi dan dunia yang tidak nyata.',
+            'description' => 'Genre yang melibatkan imajinasi dan dunia sihir.'
         ]);
     }
 }
