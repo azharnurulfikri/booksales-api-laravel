@@ -12,7 +12,10 @@ class BookController extends Controller
         // Ambil semua data buku dari database
         $books = Book::all();
 
-        // Kirim data ke view 'books.index' (file index.blade.php di folder books)
-        return view('books.index', compact('books'));
-    }
+        return response()->json([
+            "success" =>   true,
+            "message" => "get all resources",
+             "data" => $books
+         ], 200);
+}
 }
