@@ -11,16 +11,12 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 // route perbukuan
-Route::get('/books', [BookController::class, 'index']);
-Route::post('/books', [BookController::class, 'store']);
-
+Route::apiResource('books', BookController::class);
 
 
 // route per Genrean
-Route::get('/genres', [GenreController::class, 'index']);
-Route::post('/genres', [GenreController::class, 'store']);
+Route::apiResource('genres', GenreController::class);
 
 
 // route author
-Route::get('/authors', [AuthorController::class, 'index']);
-Route::post('/authors', [AuthorController::class, 'store']);
+Route::apiResource('authors', AuthorController::class);
