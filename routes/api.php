@@ -1,22 +1,40 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES (Semua Orang Bisa Akses)
+|--------------------------------------------------------------------------
+*/
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// route perbukuan
-Route::apiResource('books', BookController::class);
+// Read & Show untuk Author dan Genre (Tanpa Login)
+Route::apiResource('authors', AuthorController::class)->only(['index', 'show']);
+Route::apiResource('genres', GenreController::class)->only(['index', 'show']);
+Route::apiResource('books', BookController::class)->only(['index', 'show']);
 
+/*
+|--------------------------------------------------------------------------
+| PROTECTED ROUTES (Wajib Login & Punya Role Admin)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth:api', 'checkrole:admin'])->group(function () {
+    
+    // Create, Update, Destroy untuk Author
+    Route::apiResource('authors', AuthorController::class)->except(['index', 'show']);
+    
+    // Create, Update, Destroy untuk Genre
+    Route::apiResource('genres', GenreController::class)->except(['index', 'show']);
+    
+    // Create, Update, Destroy untuk Books
+    Route::apiResource('books', BookController::class)->except(['index', 'show']);
 
-// route per Genrean
-Route::apiResource('genres', GenreController::class);
-
-
-// route author
-Route::apiResource('authors', AuthorController::class);
+    // Logout juga perlu ditaruh di sini
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
