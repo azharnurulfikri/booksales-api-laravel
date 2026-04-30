@@ -1,40 +1,54 @@
-<?php
+    <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\GenreController;
-use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\AuthController;
+    use App\Http\Controllers\AuthorController;
+    use App\Http\Controllers\BookController;
+    use App\Http\Controllers\GenreController;
+    use App\Http\Controllers\TransactionController;
+    use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC ROUTES (Semua Orang Bisa Akses)
-|--------------------------------------------------------------------------
-*/
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+    /*
+    |--------------------------------------------------------------------------
+    | 1. PUBLIC ROUTES (Tanpa Login)
+    |--------------------------------------------------------------------------
+    */
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 
-// Read & Show untuk Author dan Genre (Tanpa Login)
-Route::apiResource('authors', AuthorController::class)->only(['index', 'show']);
-Route::apiResource('genres', GenreController::class)->only(['index', 'show']);
-Route::apiResource('books', BookController::class)->only(['index', 'show']);
+    // Read-only untuk semua orang
+    Route::get('/authors', [AuthorController::class, 'index']);
+    Route::get('/authors/{id}', [AuthorController::class, 'show']);
+    Route::get('/genres', [GenreController::class, 'index']);
+    Route::get('/genres/{id}', [GenreController::class, 'show']);
+    Route::get('/books', [BookController::class, 'index']);
+    Route::get('/books/{id}', [BookController::class, 'show']);
 
-/*
-|--------------------------------------------------------------------------
-| PROTECTED ROUTES (Wajib Login & Punya Role Admin)
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth:api', 'checkrole:admin'])->group(function () {
-    
-    // Create, Update, Destroy untuk Author
-    Route::apiResource('authors', AuthorController::class)->except(['index', 'show']);
-    
-    // Create, Update, Destroy untuk Genre
-    Route::apiResource('genres', GenreController::class)->except(['index', 'show']);
-    
-    // Create, Update, Destroy untuk Books
-    Route::apiResource('books', BookController::class)->except(['index', 'show']);
+    /*
+    |--------------------------------------------------------------------------
+    | 2. PROTECTED ROUTES (Wajib Login)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware(['auth:api'])->group(function () {
+        
+        // Fitur Transaksi untuk Pembeli
+        Route::post('/transactions', [TransactionController::class, 'store']);
+        Route::get('/transactions/{id}', [TransactionController::class, 'show']);
+        
+        Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Logout juga perlu ditaruh di sini
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
+        /*
+        |--------------------------------------------------------------------------
+        | 3. ADMIN ONLY (Login + Admin Role)
+        |--------------------------------------------------------------------------
+        */
+        Route::middleware(['checkrole:admin'])->group(function () {
+            
+            // Admin bisa lihat semua daftar transaksi
+            Route::get('/transactions', [TransactionController::class, 'index']);
+            
+            // CRUD Master Data (Except index & show karena sudah ada di publik)
+            Route::apiResource('authors', AuthorController::class)->except(['index', 'show']);
+            Route::apiResource('genres', GenreController::class)->except(['index', 'show']);
+            Route::apiResource('books', BookController::class)->except(['index', 'show']);
+        });
+    });
